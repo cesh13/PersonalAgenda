@@ -1,12 +1,11 @@
 package dev.cmolina.agenda.contact;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/contacts")
@@ -24,4 +23,17 @@ public class ContactController {
         return contactService.getContacts();
     }
 
+    @GetMapping("/{id}")
+    public Contact getContact(@PathVariable("id") UUID id){ return contactService.getContactById(id);}
+
+    @DeleteMapping("/{id}")
+    public void deleteContact(@PathVariable("id") UUID id){
+        contactService.delete(id);
+    }
+
+    @PostMapping
+    public UUID saveContact(@RequestBody Contact contact){
+        contactService.saveOrUpdate(contact);
+        return contact.getId();
+    }
 }
